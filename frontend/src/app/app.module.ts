@@ -1,21 +1,26 @@
-// src/app/app.module.ts
-
+// client/src/app/app.module.ts
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module'; // Ensure this import is present
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { TaskListComponent } from './task/task.component';
+import { TaskService } from './task.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    // ... other components
+    TaskListComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, // Ensure AppRoutingModule is imported here
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule
   ],
-  providers: [],
-  bootstrap: [AppComponent],
+  providers: [TaskService],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

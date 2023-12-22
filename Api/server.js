@@ -1,25 +1,26 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// Middleware
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://localhost/taskmanager', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// MongoDB Connection
+mongoose.connect('mongodb://localhost:27017/task-manager', { useNewUrlParser: true, useUnifiedTopology: true });
 
-// Define mongoose schemas and models for User, Comment, and Task here
-
-// Define routes for handling tasks, users, comments, etc.
+// Routes
 const taskRoutes = require('./routes/task.routes');
-app.use('/api/tasks', taskRoutes);
+const userRoutes = require('./routes/user.routes');
+const commentRoutes = require('./routes/comment.routes');
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.use('/tasks', taskRoutes);
+app.use('/users', userRoutes);
+app.use('/comments', commentRoutes);
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
