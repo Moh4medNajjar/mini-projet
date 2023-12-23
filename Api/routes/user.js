@@ -76,7 +76,6 @@ router.put('/update/:id', (req, res) => {
     const id = req.params.id;
     const data = req.body;
   
-    // Use { new: true } to return the modified document rather than the original
     User.findOneAndUpdate({ _id: id }, data, { new: true })
       .then((updatedUser) => {
         if (!updatedUser) {
