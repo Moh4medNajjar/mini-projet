@@ -1,13 +1,11 @@
-const mongoose = require('mongoose'); 
+const mongoose = require('mongoose');
 
-mongoose.connect('mongodb://localhost:27017/TaskManager2')
+mongoose.connect('mongodb://127.0.0.1:27017/TaskManager2')
     .then(() => {
-        console.log("Succesfully connected to the database !");
+        console.log("Successfully connected to the database!");
     })
     .catch((err) => {
-        console.log("Failed to connect to the database :(")
-    })
+        console.error("Failed to connect to the database:", err);
+    });
 
-
-module.exports = mongoose ;
 
