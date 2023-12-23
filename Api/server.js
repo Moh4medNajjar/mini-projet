@@ -1,16 +1,13 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const cors = require('cors');
+require('./db/dbConnect')
 
 const app = express();
-const port = 3000;
-
 app.use(cors());
-app.use(bodyParser.json());
-
-
-
+app.use(express.json()); 
+const port = 3000;
+const userApi = require('./routes/user')
+app.use('/user', userApi) 
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

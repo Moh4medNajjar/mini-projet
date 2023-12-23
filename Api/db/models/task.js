@@ -1,18 +1,5 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-  username: String,
-  fullName: String,
-  email: String,
-});
-
-const commentSchema = new mongoose.Schema({
-  user: userSchema,
-  timestamp: { type: Date, default: Date.now },
-  text: String,
-  edited: { type: Boolean, default: false },
-});
-
 const taskSchema = new mongoose.Schema({
   title: String,
   description: String,
