@@ -1,0 +1,313 @@
+.container-fluid{
+  min-height:729px;
+  background-color: #e0dde2cb;
+  font-family: 'cairo', sans-serif;
+  overflow-x: hidden;
+}
+.button {
+  border-radius: 10px;
+  padding: 5px 8px;
+  background: #fff; /* White background */
+  color: linear-gradient(45deg, #6c1fbc, #2a00b0); /* Text color gradient */
+  border: none;
+  height: 45px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.glass-container {
+  cursor: pointer;
+  border-radius: 13px;
+  width: 280px;
+  margin-left: auto;
+  height: 80px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 15px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.20));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 3px 4px 6px rgba(0, 0, 0, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.glass-container img {
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.glass-container p {
+  margin: 0;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.glass-container p.email {
+  font-size: 12px;
+  color: white;
+}
+
+
+
+
+/* Basic styling for the collaborators box */
+.collaborators-box {
+  padding-left:19px;
+  margin:auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 600px; /* Adjust the width as needed */
+  margin: 20px auto;
+  max-height:450px;
+  overflow-y: scroll
+}
+
+.collaborator-card {
+  width: calc(50% - 20px); /* 2 collaborators per row with 20px gap */
+  box-sizing: border-box;
+  text-align: center;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  overflow: hidden;
+  transition-duration: 200ms;
+  cursor:pointer
+}
+.collaborator-card:hover {
+  background-color:#9633ff21;
+}
+
+.collaborator-image {
+  width: 60px; /* Adjust the image size as needed */
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.collaborator-username {
+  font-weight: bold;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+}
+
+.collaborator-email {
+  color: #777;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/*********************************Les piles*****************************************/
+.example-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 25px 25px 0;
+  display: inline-block;
+  vertical-align: top;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 30px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+  overflow-y: scroll;
+  max-height:450px
+}
+.example-box:hover {
+  background-color: #c793ff!important; /* 1A is the alpha value for transparency */
+  color: #ffffff; /* White text on hover */
+}
+.example-box:hover .priority-circle {
+  opacity: 0.8; /* Adjust the opacity as needed */
+}
+
+.example-container:hover {
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.example-list {
+  border: 2px solid #9633FF;
+  min-height: 60px;
+  border-radius: 12px;
+  overflow: hidden;
+  display: block;
+}
+
+.example-box {
+  padding: 15px;
+  border-bottom: 2px solid #9633FF;
+  color: #663399;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  cursor: move;
+  font-size: 16px;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.example-box:last-child {
+  border: none;
+}
+
+.example-box:hover {
+  background-color: #f0f0f0;
+}
+
+.cdk-drag-preview {
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+h2 {
+  color: #9633FF;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+*{
+  user-select: none;
+}
+.example-box {
+  position: relative;
+  padding: 15px;
+  border-bottom: 2px solid #9633FF;
+  color: #663399;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  cursor: move;
+  font-size: 16px;
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.priority-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+/******************************************************************/
+.container-fluid {
+  background: radial-gradient(circle at top right, #8A2AE3, #3D01F5);
+  padding: 20px;
+}
+
+
+
+.collaborators-box {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.collaborator-card {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.collaborator-card:hover {
+  transform: scale(1.05); /* Scale up on hover */
+}
+
+.example-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.example-box {
+  position: relative;
+  padding: 15px;
+  border-bottom: 2px solid #9633FF;
+  color: #663399;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  cursor: move;
+  font-size: 16px;
+  transition-duration: 0.2s ease-in-out;
+}
+
+.example-box:hover,
+.cdk-drag-preview .example-box {
+  background: linear-gradient(45deg, #6c1fbc, #2a00b0);
+  color: #ffffff;
+  font-weight:600
+}
+
+.priority-circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.example-box:hover .priority-circle,
+.cdk-drag-preview .example-box .priority-circle {
+  opacity: 0.8;
+}
+button {
+  background-color: #ffffff!important;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.button:hover {
+  background-color: #f0f0f0;
+}
+.text-task{
+  margin:0px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.collaborators-box, .example-container {
+  scrollbar-width: thin;
+  scrollbar-color: #663399 #eaeaea;
+}
+
+.collaborators-box::-webkit-scrollbar, .example-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.collaborators-box::-webkit-scrollbar-thumb, .example-container::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #6c1fbc, #2a00b0);
+}
+
+
+.collaborators-box::-webkit-scrollbar-track, .example-container::-webkit-scrollbar-track {
+  background-color: #f7f7f7;
+}
+
+/* Handle on hover */
+.collaborators-box::-webkit-scrollbar-thumb:hover, .example-container::-webkit-scrollbar-thumb:hover {
+  background-color: #6c1fbc;
+}

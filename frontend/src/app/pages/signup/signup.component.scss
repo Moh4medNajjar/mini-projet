@@ -1,0 +1,45 @@
+@import url('https://fonts.cdnfonts.com/css/poppins');
+
+.container-fluid{
+  width:100%;
+  height:729px;
+  background-color: #9633FF;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form{
+  color:#8b8c9ce4;
+  background-color:#FFFFFF;
+  padding: 40px 50px;
+  border-radius:25px;
+  box-shadow: 5px 20px 60px #3c066e; /* Adjust the values as needed */
+  font-family: 'Cairo', sans-serif;
+
+
+}
+button {
+  background: radial-gradient(circle at top left, #8A2AE3, #3D01F5);
+  width: 170px;
+  margin-top: 20px;
+  font-weight: 500;
+}
+
+button:hover {
+  background: radial-gradient(circle at top left, #8a2ae3da, #3e01f5d4);
+}
+.input-group-text, .input-group-prepend {
+  width: 40px;
+  background-color: white !important;
+}
+
+input:focus {
+  outline: none; /* Optional: to remove the default focus outline */
+  border-color: #9633FF;
+  box-shadow: 0 0 5px rgba(150, 51, 255, 0.5); /* Optional: add a subtle box shadow for emphasis */
+}
+
+i{
+  color:#751EE7
+}
