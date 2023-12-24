@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const userSchema = require('./user');
 
 const taskSchema = new mongoose.Schema({
   title: { type: String, required: true, unique: true },
@@ -10,7 +9,7 @@ const taskSchema = new mongoose.Schema({
   status: { type: String, enum: ['Todo', 'In Progress', 'Done'], default: 'Todo' },
   category: String,
   participants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User'}],
-  // comments: [commentSchema],
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment'}],
   attachments: [String],
 });
 
