@@ -5,7 +5,7 @@ const User = require('../db/models/user');
 router.use(express.json());
 
 // POST
-router.post('/', async (req, res) => {
+router.post('/add', async (req, res) => {
   try {
     const { username, text } = req.body;
     const user = await User.findOne({ username });
@@ -13,9 +13,13 @@ router.post('/', async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    const comment = new Comment({ user: { username }, text });
-    const savedComment = await comment.save();
 
+    const comment = new Comment({
+      user: { username },
+      text,
+    });
+
+    const savedComment = await comment.save();
     res.json(savedComment);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -23,8 +27,10 @@ router.post('/', async (req, res) => {
 });
 
 
+
+
 // GET_ALL
-router.get('/', async (req, res) => {
+router.get('/all', async (req, res) => {
   try {
     const comments = await Comment.find();
     res.json(comments);
