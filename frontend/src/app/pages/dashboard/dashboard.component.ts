@@ -76,20 +76,9 @@ done = [
     }
   }
 
-  // addCollaborator(){
-  //   this.WebReqService.findCollab(this.searchedEmail).subscribe(
-  //     (foundCollaborator) => {
-  //       console.log("Found collaborator is " + foundCollaborator[0].firstName + " " + foundCollaborator[0]);
-  //       this.collaborators.push(foundCollaborator);
-  //       console.log(foundCollaborator.username)
-  //     }
-  //   )
-  // }
-
   addCollaborator() {
     this.WebReqService.findCollab(this.searchedEmail).subscribe(
       (foundCollaborator) => {
-        // console.log("Found collaborator is " + foundCollaborator[0].firstname + " " + foundCollaborator[0]);
         this.collaborators.push(foundCollaborator);
         console.log(foundCollaborator.username);
       },
