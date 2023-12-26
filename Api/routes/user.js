@@ -21,28 +21,44 @@ router.post('/register', (req, res) => {
     })
 })
 
+
+
 router.post('/login', async (req, res) => {
-    let data = req.body; 
-    let userEmail = data.email; 
-    let usr = await User.findOne({email: userEmail});
-    
-    if(!usr){
-        console.log("Email or password invalid !")
-    } else{
-        isValid = bcrypt.compareSync(data.password, usr.password)
-        if(!isValid){
-            console.log("Email or password Invalid");
-        } else {
-            payload = {
-                email: usr.email,
-                _id: usr._id
-            }
-            usr.token = jwt.sign(payload, '123456');
-            console.log(`Successfully connected to your account, welcome ${usr.username}`);
-            res.status(200).send({token: usr.token})
-        }
+  try {
+    const data = req.body;
+    const userEmail = data.email;
+    const user = await User.findOne({ email: userEmail });
+
+    if (!user) {
+      console.log("Email not found");
+      return res.status(401).json({ error: 'Email or password is incorrect' });
     }
-})
+
+    const isValidPassword = bcrypt.compareSync(data.password, user.password);
+    if (!isValidPassword) {
+      console.log("Password is incorrect");
+      return res.status(401).json({ error: 'Email or password is incorrect' });
+    }
+
+    const payload = {
+      email: user.email,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      username: user.username,
+      _id: user._id,
+    };
+
+    const token = jwt.sign(payload, '123456789', { expiresIn: '1h' }); // Use a more secure secret key
+
+    console.log(`Successfully connected to your account, welcome ${user.username}`);
+    res.status(200).json({ token });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
 
 router.get('/all', (req, res) => {
     User.find({}).then((allUsers) => {
@@ -60,6 +76,16 @@ router.get('/getbyid/:id', (req, res) => {
     }).catch((err) => {
         res.status(400).send(err)
     })
+})
+
+router.get('/getbyemail/:email', (req, res) => {
+
+  User.findOne({email: req.params.email}).then((foundUser) => {
+      res.status(200).send(foundUser);
+      console.log("user found !")
+  }).catch((err) => {
+      res.status(400).send(err)
+  })
 })
 
 router.delete('/delete/:id', (req, res) => {

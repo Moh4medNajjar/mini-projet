@@ -14,15 +14,32 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
       </div>
     </div>
     <div class="col-lg-3 mt-4" style="flex-direction: column;">
-      <div class="button d-flex justify-content-center align-items-center">
-        <i class="fa-solid fa-circle-plus"></i>
-        <p style="margin:0 10px; font-size:20px; ">Add a collaborator</p>
-      </div>
-      <div class="collaborators-box d-flex justify-content-between">
-        <div *ngFor="let collaborator of collaborators" class="collaborator-card">
-          <img [src]="collaborator.image" alt="User Image" class="collaborator-image">
-          <div class="collaborator-username">{{ collaborator.username }}</div>
-          <div class="collaborator-email">{{ collaborator.email }}</div>
+      <div style="max-width: fit-content;" class="mx-auto">
+        <div class="button d-flex justify-content-center align-items-center">
+          <i class="fa-solid fa-circle-plus"></i>
+          <p style="margin:0 10px; font-size:20px;" data-bs-toggle="modal" data-bs-target="#exampleModal">Add a collaborator</p>
+        </div>
+        <!--Modal-->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Find new collaborator</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+                <input type="text" [(ngModel)]="searchedEmail">
+                <button type="button" class="btn addUsers" (click)="addCollaborator()">Add User</button>
+
+            </div>
+          </div>
+        </div>
+        <!--Modal-->
+        <div class="collaborators-box d-flex justify-content-between">
+          <div *ngFor="let collaborator of collaborators" class="collaborator-card">
+            <img [src]="collaborator.image" alt="User Image" class="collaborator-image">
+            <div class="collaborator-username">{{ collaborator.username }}</div>
+            <div class="collaborator-email">{{ collaborator.email }}</div>
+          </div>
         </div>
       </div>
 
@@ -36,7 +53,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
               <div class=" d-flex align-items-center justify-content-start">
                 <img src="../../../assets/images/image.png" class="rounded-pill" width="60" height="60" alt="">
                 <div class="hello ms-3 mt-2">
-                  <p style="font-weight: 800; font-size:24px; margin:0px;margin-bottom:6px; margin-top:3px">Welcome again, Mohamed Najjar!</p>
+                  <p style="font-weight: 800; font-size:24px; margin:0px;margin-bottom:6px; margin-top:3px">Welcome again, {{WebReqService.getUserDataFromToken().username}}!</p>
                   <p style="font-weight:500; color:grey; letter-spacing: 1px;"> <i class="fa fa-bell me-1" style="margin:0px;"></i> You have 2 new messages and 4 due tasks..</p>
                 </div>
               </div>

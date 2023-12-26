@@ -7,31 +7,23 @@ import {
   CdkDrag,
   CdkDropList,
 } from '@angular/cdk/drag-drop';
-
+import { WebRequestService } from '../../web-request.service';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, CdkDropList, CdkDrag],
+  imports: [CommonModule, CdkDropList, CdkDrag, HttpClientModule, FormsModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
+  providers: [WebRequestService]
 })
 export class DashboardComponent {
+  constructor(public WebReqService: WebRequestService){}
+  searchedEmail: string = ""
   collaborators = [
   { username: 'MohamedNajjar', email: 'najjarmohamed443@gmail.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@example.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exadcmple.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@example.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
-  { username: 'User1', email: 'user1@exampdcdddcle.com', image: '../../../assets/images/image.png' },
+
 ];
 todo = [
   { title: 'Get to work', priority: 'medium' },
@@ -84,7 +76,28 @@ done = [
     }
   }
 
+  // addCollaborator(){
+  //   this.WebReqService.findCollab(this.searchedEmail).subscribe(
+  //     (foundCollaborator) => {
+  //       console.log("Found collaborator is " + foundCollaborator[0].firstName + " " + foundCollaborator[0]);
+  //       this.collaborators.push(foundCollaborator);
+  //       console.log(foundCollaborator.username)
+  //     }
+  //   )
+  // }
 
+  addCollaborator() {
+    this.WebReqService.findCollab(this.searchedEmail).subscribe(
+      (foundCollaborator) => {
+        // console.log("Found collaborator is " + foundCollaborator[0].firstname + " " + foundCollaborator[0]);
+        this.collaborators.push(foundCollaborator);
+        console.log(foundCollaborator.username);
+      },
+      (error) => {
+        console.error("Error finding collaborator:", error);
+      }
+    );
+  }
 
 
 }
