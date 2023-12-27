@@ -7,8 +7,10 @@ import {
   CdkDrag,
   CdkDropList,
 } from '@angular/cdk/drag-drop';
-import { WebRequestService } from '../../web-request.service';
-import { HttpClientModule } from '@angular/common/http';
+import { TaskService } from '../../task.service';
+import { Task } from '../../task.model';
+import { WebRequestService } from './../../web-request.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-dashboard',
@@ -16,40 +18,108 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, CdkDropList, CdkDrag, HttpClientModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
-  providers: [WebRequestService]
+  providers: [TaskService, WebRequestService]
 })
 export class DashboardComponent {
-  constructor(public WebReqService: WebRequestService){}
-  searchedEmail: string = ""
-  collaborators = [
-  { username: 'MohamedNajjar', email: 'najjarmohamed443@gmail.com', image: '../../../assets/images/image.png' },
+  public getAllTasks: Task[] = [];
+public newTaskData: Task = {
+  _id: undefined,
+  title: '',
+  priority: '',
+  description: '',
+  due_date: new Date('2023-12-31T23:59:59'),
+  owner: '',
+  status: '',
+  category: '',
+  participants: [],
+  comments: [],
+  attachments: []
+};
+
+
+
+todo : Task[] = [];
+
+inProgress : Task[] = [];
+
+done : Task[] = [];
+
+
+
+searchedEmail: string = ""
+collaborators = [
+{ username: 'MohamedNajjar', email: 'najjarmohamed443@gmail.com', image: '../../../assets/images/image.png' },
 
 ];
-todo = [
-  { title: 'Get to work', priority: 'medium' },
-  { title: 'Pick up groceries', priority: 'low' },
-  { title: 'Go home', priority: 'high' },
-  { title: 'Fall asleep', priority: 'low' },
-];
 
-inProgress = [
-  { title: 'Get up', priority: 'medium' },
-  { title: 'Brush teeth', priority: 'low' },
-  { title: 'Take a shower', priority: 'high' },
-  { title: 'Check e-mail', priority: 'medium' },
-  { title: 'Walk dog', priority: 'high' },
-];
+  constructor(public TaskService: TaskService,public WebReqService : WebRequestService){}
+ 
+  ngOnInit(): void {
+    this.getTasks();
 
-done = [
-  { title: 'Get up', priority: 'low' },
-  { title: 'Brush teeth', priority: 'medium' },
-  { title: 'Take a shower', priority: 'high' },
-  { title: 'Check e-mail', priority: 'medium' },
-  { title: 'Walk dog', priority: 'low' },
-];
+  }
+  public getTasks(): void {
+    const ownerId = this.WebReqService.getUserDataFromToken()._id;
+  
+    this.TaskService.getAllTasks(ownerId).subscribe((data: Task[]) => {
+      console.log(data);
+      this.getAllTasks = data;
+  
+      if (this.getAllTasks && Array.isArray(this.getAllTasks)) {
+        this.getAllTasks.forEach((task: Task) => {
+          switch (task.status) {
+            case 'Todo':
+              this.todo.push(task);
+              break;
+            case 'In Progress':
+              this.inProgress.push(task);
+              break;
+            case 'Done':
+              this.done.push(task);
+              break;
+          }
+  
+          // Add task participants to collaborators
+          if (task.participants && Array.isArray(task.participants)) {
+            task.participants.forEach((participant: any) => {
+              // Assuming 'participant' has properties like 'username', 'email', 'image'
+              // Modify the properties accordingly based on your actual data structure
+              const collaborator = {
+                username: participant.username,
+                email: participant.email,
+                image: participant.image
+              };
+  
+              // Check if the collaborator is not already in the array
+              if (!this.collaborators.some(c => c.email === collaborator.email)) {
+                this.collaborators.push(collaborator);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+  
+  
+  public newTask() {
+    this.newTaskData.status = 'Todo';
+    console.log(this.newTaskData);
+    this.newTaskData.owner = this.WebReqService.getUserDataFromToken()._id;
+    this.TaskService.createTask(this.newTaskData).subscribe(
+      (response) => {
+        console.log('New task created:', response);
+      },
+      (error) => {
+        console.error('Error creating task:', error);
+      }
+    );
+  }
+  
+  
 
 
-  drop(event: CdkDragDrop<{ title: string; priority: string; }[]>) {
+  drop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -100,4 +170,17 @@ done = [
   }
 
 
+  public deleteTask(taskId: string): void {
+    this.TaskService.deleteTask(taskId).subscribe(
+      () => {
+        console.log('Task deleted successfully');
+        // Refresh the task lists after deletion
+        this.getTasks();
+      },
+      (error) => {
+        console.error('Error deleting task:', error);
+      }
+    );
+  }
 }
+

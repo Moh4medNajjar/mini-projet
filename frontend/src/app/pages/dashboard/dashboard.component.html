@@ -6,6 +6,31 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
   <div>
 
   </div>
+<!-- Add this form inside your existing HTML template -->
+<!-- Inside your existing HTML template -->
+<div class="new-task-form">
+  <h3>Create a New Task {{getAllTasks | json}}</h3>
+  <form #newTaskForm="ngForm" (ngSubmit)="newTask()">
+    <div class="form-group">
+      <label for="taskTitle">Task Title</label>
+      <input type="text" class="form-control" id="taskTitle" name="title" [(ngModel)]="newTaskData.title" required>
+    </div>
+
+    <div class="form-group">
+      <label for="taskPriority">Task Priority</label>
+      <select class="form-control" id="taskPriority" name="priority" [(ngModel)]="newTaskData.priority" required>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+    </div>
+
+    <!-- Add other form fields as needed -->
+
+    <button type="submit" class="btn btn-primary">Create Task</button>
+  </form>
+</div>
+
 
   <div class="row">
     <div class="card">
@@ -70,7 +95,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
         <div class="col-md-4 col-xs-12">
           <div class="d-flex  justify-content-center align-items-center">
             <div class="example-container">
-              <h2>To do <span>(1)</span></h2>
+              <h2>To do <span>({{ todo.length }})</span></h2>
 
               <div
                 cdkDropList
@@ -83,6 +108,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                   <div class="example-box" cdkDrag>
                     <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
                     <p class="text-task">{{item.title}}</p>
+                    <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
                   </div>
                 }
               </div>
@@ -92,7 +118,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
         <div class="col-md-4 col-xs-12">
           <div class="d-flex  justify-content-center align-items-center">
             <div class="example-container">
-              <h2>In progress <span>(1)</span></h2>
+              <h2>In progress <span>({{ inProgress.length }})</span></h2>
 
               <div
                 cdkDropList
@@ -105,6 +131,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                   <div class="example-box" cdkDrag>
   <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
   <p class="text-task">{{item.title}}</p>
+  <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
 </div>
                 }
               </div>
@@ -114,7 +141,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
         <div class="col-md-4 col-xs-12 ">
           <div class="d-flex  justify-content-center align-items-center">
             <div class="example-container">
-              <h2>Done <span>(1)</span></h2>
+              <h2>Done <span>({{ done.length }})</span></h2>
 
               <div
                 cdkDropList
@@ -127,6 +154,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                   <div class="example-box" cdkDrag>
                     <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
                     <p class="text-task">{{item.title}}</p>
+                    <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
                   </div>
                 }
               </div>
@@ -135,6 +163,5 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
         </div>
       </div>
     </div>
-
   </div>
 </div>

@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 const Task = require('../db/models/task');
 // Get all tasks
-router.get('/all', async (req, res) => {
+router.get('/all/:ownerId', async (req, res) => {
   try {
-    const tasks = await Task.find();
-    res.json(tasks);
+    const ownerId = req.params.ownerId;
+    const tasks = await Task.find({ owner: ownerId });
+    res.status(200).json(tasks);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

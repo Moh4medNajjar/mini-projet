@@ -29,7 +29,7 @@ export class WebRequestService {
     } else {
       try{
         let data = JSON.parse(window.atob(token.split('.')[1]))
-        console.log(data)
+       // console.log(data)
         return data
       } catch (error) {
         console.error('Error parsing token:', error);
