@@ -108,6 +108,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                   <div class="example-box" cdkDrag>
                     <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
                     <p class="text-task">{{item.title}}</p>
+                    <button (click)="updateTaskDialog(task._id)">Update Task</button>
                     <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
                   </div>
                 }
@@ -131,6 +132,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                   <div class="example-box" cdkDrag>
   <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
   <p class="text-task">{{item.title}}</p>
+  <button (click)="updateTaskDialog(task._id)">Update Task</button>
   <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
 </div>
                 }
@@ -154,6 +156,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                   <div class="example-box" cdkDrag>
                     <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
                     <p class="text-task">{{item.title}}</p>
+                    <button (click)="updateTaskDialog(task._id)">Update Task</button>
                     <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
                   </div>
                 }

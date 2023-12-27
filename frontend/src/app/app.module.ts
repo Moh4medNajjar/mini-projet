@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-
+import { MatDialogModule } from '@angular/material/dialog';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TaskService } from './task.service';
@@ -17,6 +17,7 @@ import { TaskService } from './task.service';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    MatDialogModule,
     FormsModule
   ],
   providers: [TaskService],

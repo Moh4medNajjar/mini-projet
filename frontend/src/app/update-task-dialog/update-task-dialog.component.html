@@ -1,0 +1,13 @@
+<!-- update-task-dialog.component.html -->
+<h2 mat-dialog-title>Update Task</h2>
+<form [formGroup]="updateTaskForm">
+  <!-- Add form controls for updating task details -->
+  <!-- Example: -->
+  <!-- <mat-form-field>
+    <input matInput formControlName="title" placeholder="Title">
+  </mat-form-field> -->
+  <div mat-dialog-actions>
+    <button mat-button (click)="cancel()">Cancel</button>
+    <button mat-button (click)="save()">Save</button>
+  </div>
+</form>
