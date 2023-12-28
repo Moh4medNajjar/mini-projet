@@ -14,9 +14,10 @@ export class TaskService {
     return this.http.get<any[]>(`${this.baseUrl}/all/${ownerId}`);
   }
 
-  getTasksByOwner(id: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/${id}`);
+  getTasksById(id: string): Observable<Task> {
+    return this.http.get<Task>(`${this.baseUrl}/${id}`);
   }
+
   createTask(task: Task): Observable<Task> {
     return this.http.post<Task>(`${this.baseUrl}/add`, task);
   }

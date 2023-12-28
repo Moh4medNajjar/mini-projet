@@ -13,6 +13,23 @@ router.get('/all/:ownerId', async (req, res) => {
 });
 
 
+// Get task by Id
+router.get('/:taskId', async (req, res) => {
+  try {
+    const taskId = req.params.taskId;
+    const task = await Task.findById(taskId);
+    
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    res.status(200).json(task);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 //add a task
 router.post('/add',  (req, res) => {
   let data = req.body

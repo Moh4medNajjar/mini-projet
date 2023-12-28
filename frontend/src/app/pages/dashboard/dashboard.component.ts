@@ -16,6 +16,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { UpdateTaskDialogComponent } from '../../update-task-dialog/update-task-dialog.component'; 
 import { NewTaskDialogComponent } from '../../new-task-dialog/new-task-dialog.component'; 
 
+
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -52,7 +55,7 @@ export class DashboardComponent {
 
   ];
 
-  constructor(public TaskService: TaskService, public WebReqService : WebRequestService, private dialog: MatDialog){}
+  constructor(public TaskService: TaskService, public WebReqService : WebRequestService, private router: Router, private dialog: MatDialog){}
  
   ngOnInit(): void {
     this.getTasks();
@@ -62,7 +65,6 @@ export class DashboardComponent {
     const ownerId = this.WebReqService.getUserDataFromToken()._id;
   
     this.TaskService.getAllTasks(ownerId).subscribe((data: Task[]) => {
-      console.log(data);
       this.AllTasks = data;
   
       if (this.AllTasks && Array.isArray(this.AllTasks)) {
@@ -104,7 +106,6 @@ export class DashboardComponent {
   
   public newTask() {
     this.newTaskData.status = 'Todo';
-    console.log(this.newTaskData);
     this.newTaskData.owner = this.WebReqService.getUserDataFromToken()._id;
     this.TaskService.createTask(this.newTaskData).subscribe(
       (response) => {
@@ -203,13 +204,13 @@ export class DashboardComponent {
   updateTaskDialog(task: Task) {
     let taskId = task._id;
     const dialogRef = this.dialog.open(UpdateTaskDialogComponent, {
-      width: '700px', // Adjust the width as needed
+      width: '700px', 
       data: { task },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.updateTask(taskId, result); // Pass the updated data to updateTask
+        this.updateTask(taskId, result); 
       }
     });
   }
@@ -227,5 +228,8 @@ export class DashboardComponent {
     );
   }
 
+  openTask(taskId: string) {
+    this.router.navigate(['task', taskId]);
+  }
 }
 

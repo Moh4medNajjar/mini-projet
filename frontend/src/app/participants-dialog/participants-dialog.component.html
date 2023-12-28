@@ -1,0 +1,35 @@
+<form [formGroup]="addParticipantForm" (ngSubmit)="save()">
+
+    <mat-form-field class="example-chip-list">
+        <mat-label>participants</mat-label>
+    
+        <mat-chip-grid #chipGrid aria-label="participant selection">
+          @for (participant of participants; track participant) {
+            <mat-chip-row (removed)="remove(participant)">
+              {{participant}}
+              <button matChipRemove [attr.aria-label]="'remove ' + participant">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          }
+        </mat-chip-grid>
+    
+        <input placeholder="New participant..." #participantInput [formControl]="participantCtrl"
+          [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)"/>
+          <mat-select formControlName="participant">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          @for (participant of filteredparticipants | async; track participant) {
+            <mat-option [value]="participant">{{participant}}</mat-option>
+          }
+        </mat-autocomplete>
+          </mat-select>
+      </mat-form-field>
+  
+    <div class="dialog-buttons">
+      <button mat-button type="button" (click)="cancel()">Cancel</button>
+      <button mat-raised-button color="primary" type="submit">Save</button>
+    </div>
+  </form>
+  

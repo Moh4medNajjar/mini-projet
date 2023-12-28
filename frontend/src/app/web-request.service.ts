@@ -17,6 +17,10 @@ export class WebRequestService {
     return this.http.post('http://127.0.0.1:3000/user/login', data)
   }
 
+  getUser(id: String): Observable<any> {
+    return this.http.get(`http://127.0.0.1:3000/user/getbyid/${id}`)
+  }
+
   findCollab(email: String): Observable<any>{
     return this.http.get(`http://127.0.0.1:3000/user/getbyemail/${email}`)
   }
