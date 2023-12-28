@@ -10,8 +10,12 @@ import {
 import { TaskService } from '../../task.service';
 import { Task } from '../../task.model';
 import { WebRequestService } from './../../web-request.service';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateTaskDialogComponent } from '../../update-task-dialog/update-task-dialog.component'; 
+import { NewTaskDialogComponent } from '../../new-task-dialog/new-task-dialog.component'; 
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -21,38 +25,34 @@ import { FormsModule } from '@angular/forms';
   providers: [TaskService, WebRequestService]
 })
 export class DashboardComponent {
-  public getAllTasks: Task[] = [];
-public newTaskData: Task = {
-  _id: undefined,
-  title: '',
-  priority: '',
-  description: '',
-  due_date: new Date('2023-12-31T23:59:59'),
-  owner: '',
-  status: '',
-  category: '',
-  participants: [],
-  comments: [],
-  attachments: []
-};
+  public AllTasks: Task[] = [];
+  public newTaskData: Task = {
+    _id: undefined,
+    title: '',
+    priority: '',
+    description: '',
+    due_date: new Date(),
+    owner: '',
+    status: '',
+    category: '',
+    participants: [],
+    comments: [],
+    attachments: []
+  };
 
+  todo : Task[] = [];
 
+  inProgress : Task[] = [];
 
-todo : Task[] = [];
+  done : Task[] = [];
 
-inProgress : Task[] = [];
+  searchedEmail: string = ""
+  collaborators = [
+  { username: 'MohamedNajjar', email: 'najjarmohamed443@gmail.com', image: '../../../assets/images/image.png' },
 
-done : Task[] = [];
+  ];
 
-
-
-searchedEmail: string = ""
-collaborators = [
-{ username: 'MohamedNajjar', email: 'najjarmohamed443@gmail.com', image: '../../../assets/images/image.png' },
-
-];
-
-  constructor(public TaskService: TaskService,public WebReqService : WebRequestService){}
+  constructor(public TaskService: TaskService, public WebReqService : WebRequestService, private dialog: MatDialog){}
  
   ngOnInit(): void {
     this.getTasks();
@@ -63,10 +63,10 @@ collaborators = [
   
     this.TaskService.getAllTasks(ownerId).subscribe((data: Task[]) => {
       console.log(data);
-      this.getAllTasks = data;
+      this.AllTasks = data;
   
-      if (this.getAllTasks && Array.isArray(this.getAllTasks)) {
-        this.getAllTasks.forEach((task: Task) => {
+      if (this.AllTasks && Array.isArray(this.AllTasks)) {
+        this.AllTasks.forEach((task: Task) => {
           switch (task.status) {
             case 'Todo':
               this.todo.push(task);
@@ -183,7 +183,49 @@ collaborators = [
     );
   }
 
+  newTaskDialog() {
 
-  
+    const dialogRef = this.dialog.open(NewTaskDialogComponent, {
+      width: '700px',
+      data: {newTaskData: this.newTaskData},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.newTask(); 
+      }
+    });
+  }
+
+
+
+
+  updateTaskDialog(task: Task) {
+    let taskId = task._id;
+    const dialogRef = this.dialog.open(UpdateTaskDialogComponent, {
+      width: '700px', // Adjust the width as needed
+      data: { task },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.updateTask(taskId, result); // Pass the updated data to updateTask
+      }
+    });
+  }
+
+  updateTask(taskId: string, updatedTask: Task) {
+    this.TaskService.updateTask(taskId, updatedTask).subscribe(
+      (response) => {
+        console.log('Task updated:', response);
+        // Handle success, close the dialog, or perform any necessary action
+      },
+      (error) => {
+        console.error('Error updating task:', error);
+        // Handle error, display an error message, etc.
+      }
+    );
+  }
+
 }
 

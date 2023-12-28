@@ -1,13 +1,111 @@
-<!-- update-task-dialog.component.html -->
-<h2 mat-dialog-title>Update Task</h2>
-<form [formGroup]="updateTaskForm">
-  <!-- Add form controls for updating task details -->
-  <!-- Example: -->
+<form [formGroup]="updateTaskForm" (ngSubmit)="save()">
+  <mat-form-field>
+    <input matInput formControlName="title" placeholder="Task Title">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput formControlName="description" placeholder="Task Description">
+  </mat-form-field>
+
+
   <!-- <mat-form-field>
-    <input matInput formControlName="title" placeholder="Title">
+    <input matInput [matDatepicker]="dueDatePicker" formControlName="due_date" placeholder="Due Date">
+    <mat-datepicker-toggle matSuffix [for]="dueDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker startAt="2024-01-01" #dueDatePicker></mat-datepicker>
   </mat-form-field> -->
-  <div mat-dialog-actions>
-    <button mat-button (click)="cancel()">Cancel</button>
-    <button mat-button (click)="save()">Save</button>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [min]="minDate" formControlName="due_date"  [matDatepicker]="picker">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  
+
+  <mat-form-field>
+    <mat-label>Priority</mat-label>
+    <mat-select formControlName="priority">
+      <mat-option *ngFor="let priority of priorities" [value]="priority">{{ priority }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <mat-form-field>
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status">
+      <mat-option *ngFor="let status of statuses" [value]="status">{{ status }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <mat-form-field class="example-chip-list">
+    <mat-label>categories</mat-label>
+
+    <mat-chip-grid #chipGrid aria-label="category selection">
+      @for (category of categories; track category) {
+        <mat-chip-row (removed)="remove(category)">
+          {{category}}
+          <button matChipRemove [attr.aria-label]="'remove ' + category">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+
+    <input placeholder="New Category..." #categoryInput [formControl]="categoryCtrl"
+      [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)"/>
+      <mat-select formControlName="category">
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      @for (category of filteredcategories | async; track category) {
+        <mat-option [value]="category">{{category}}</mat-option>
+      }
+    </mat-autocomplete>
+      </mat-select>
+  </mat-form-field>
+
+  <!-- Using MatChipInput for participants
+  <mat-form-field>
+    <mat-chip-list #chipList>
+      <mat-chip *ngFor="let participant of participants.value" [removable]="true" (removed)="removeParticipant(participant)">
+        {{ participant }}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+    <input placeholder="Participants" formControlName="participants" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" (matChipInputTokenEnd)="addParticipant($event)">
+  </mat-form-field> -->
+
+
+<!-- 
+  <mat-form-field class="example-chip-list">
+    <mat-label>participants</mat-label>
+
+    <mat-chip-grid #chipGrid aria-label="participant selection">
+      @for (participant of participants; track participant) {
+        <mat-chip-row (removed)="remove(participant)">
+          {{participant}}
+          <button matChipRemove [attr.aria-label]="'remove ' + participant">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+
+    <input placeholder="New participant..." #participantInput [formControl]="participantCtrl"
+      [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)"/>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+      @for (participant of filteredparticipants | async; track participant) {
+        <mat-option [value]="participant">{{participant}}</mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field> -->
+
+  
+
+  <div class="dialog-buttons">
+    <button mat-button type="button" (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" type="submit">Save</button>
   </div>
 </form>

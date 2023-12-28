@@ -6,7 +6,6 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { Task } from '../task.model';
-// import { DateAdapter } from '@angular/material/core';
 import {MatNativeDateModule} from '@angular/material/core';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
@@ -20,17 +19,15 @@ import {MatIconModule} from '@angular/material/icon';
 import {AsyncPipe} from '@angular/common';
 import {LiveAnnouncer} from '@angular/cdk/a11y';
 @Component({
-  selector: 'app-update-task-dialog',
+  selector: 'app-new-task-dialog',
   standalone: true,
   imports: [CommonModule, MatSelectModule, MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatDatepickerModule, MatNativeDateModule, FormsModule, MatChipsModule, MatIconModule, MatAutocompleteModule, AsyncPipe],
-  templateUrl: './update-task-dialog.component.html',
-  styleUrl: './update-task-dialog.component.scss',
-  
+  templateUrl: './new-task-dialog.component.html',
+  styleUrl: './new-task-dialog.component.scss'
 })
-export class UpdateTaskDialogComponent {
-  updateTaskForm: FormGroup;
+export class NewTaskDialogComponent {
+  createTaskForm: FormGroup;
   priorities = ['High', 'Medium', 'Low'];
-  statuses = ['Todo', 'In Progress', 'Done'];
 
   minDate: Date;
 
@@ -42,64 +39,40 @@ export class UpdateTaskDialogComponent {
 
   @ViewChild('categoryInput') categoryInput!: ElementRef<HTMLInputElement>;
 
-
-  // allusers: string[] = [];
-  // participantCtrl = new FormControl('');
-  // filteredparticipants: Observable<string[]>;
-  // participants: string[] = [];
-  // allparticipants: string[] = [];
-
-  // @ViewChild('participantInput') participantInput!: ElementRef<HTMLInputElement>;
-
   announcer = inject(LiveAnnouncer);
 
-
-
-
   constructor(
-    private dialogRef: MatDialogRef<UpdateTaskDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { task: Task },
-    private fb: FormBuilder,
-    // private dateAdapter: DateAdapter<any>
+    private dialogRef: MatDialogRef<NewTaskDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: {newTaskData : Task},
+    private fb: FormBuilder
   ) {
-    this.updateTaskForm = this.fb.group({
-      title: [data.task.title, Validators.required],
-      description: [this.data.task.description, Validators.required],
-      due_date: [this.data.task.due_date, Validators.required],
-      priority: [this.data.task.priority, Validators.required],
-      status: [this.data.task.status, Validators.required],
-      category: [this.data.task.category],
-      // participants: [this.data.task.participants],
+
+    this.minDate = new Date();
+    this.createTaskForm = this.fb.group({
+      title: ['',Validators.required],
+      description: ['' ,Validators.required],
+      due_date: [this.minDate ,Validators.required],
+      priority: [this.data.newTaskData?.priority,Validators.required],
+      category: []
     });
-    const currentYear = new Date().getFullYear();
-    this.minDate = new Date(currentYear);
 
     this.filteredcategories = this.categoryCtrl.valueChanges.pipe(
       startWith(null),
       map((category: string | null) => (category ? this._filter(category) : this.allcategories.slice())),
     );
 
-    // this.filteredparticipants = this.participantCtrl.valueChanges.pipe(
-    //   startWith(null),
-    //   map((participant: string | null) => (participant ? this._filter(participant) : this.allparticipants.slice())),
-    // );
+
   }
 
-  // changeLocale(locale: any){
-  //   this.dateAdapter.setLocale(locale);
-  // };
-
-  
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
-    // Add our category
+
     if (value) {
       this.categories.push(value);
     }
 
-    // Clear the input value
     event.chipInput!.clear();
 
     this.categoryCtrl.setValue(null);
@@ -127,41 +100,15 @@ export class UpdateTaskDialogComponent {
     return this.allcategories.filter(category => category.toLowerCase().includes(filterValue));
   }
 
-
-  // addParticipant(event: MatChipInputEvent): void {
-  //   const input = event.input;
-  //   const value = (event.value || '').trim();
-
-  //   // Add participant
-  //   if (value) {
-  //     const participantsControl = this.updateTaskForm.get('participants');
-  //     participantsControl.setValue([...participantsControl.value, value]);
-  //   }
-
-  //   // Reset the input value
-  //   if (input) {
-  //     input.value = '';
-  //   }
-  // }
-
-  // removeParticipant(participant: string): void {
-  //   const participantsControl = this.updateTaskForm.get('participants') as FormArray;
-  //   const index = participantsControl.value.indexOf(participant);
-
-  //   if (index >= 0) {
-  //     participantsControl.value.splice(index, 1);
-  //     participantsControl.setValue([...participantsControl.value]);
-  //   }
-  // }
-
-
-
-
-
-
   save() {
-    if (this.updateTaskForm.valid) {
-      this.dialogRef.close(this.updateTaskForm.value);
+    if (this.createTaskForm.valid) {
+      const formData = this.createTaskForm.value;
+      this.data.newTaskData.title=formData.title;
+      this.data.newTaskData.description=formData.description;
+      this.data.newTaskData.due_date=formData.due_date;
+      this.data.newTaskData.priority=formData.priority;
+      this.data.newTaskData.category=formData.category;
+      this.dialogRef.close(this.createTaskForm.value);
     }
   }
 
