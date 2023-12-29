@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { User } from './user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,16 @@ export class WebRequestService {
     return this.http.get(`http://127.0.0.1:3000/user/getbyid/${id}`)
   }
 
+  getUserId(username: String): Observable<any> {
+    return this.http.get(`http://127.0.0.1:3000/user/getbyname/${username}`)
+  }
+
   findCollab(email: String): Observable<any>{
     return this.http.get(`http://127.0.0.1:3000/user/getbyemail/${email}`)
+  }
+
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`http://127.0.0.1:3000/user/all`);
   }
   
 

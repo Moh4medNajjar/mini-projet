@@ -78,6 +78,17 @@ router.get('/getbyid/:id', (req, res) => {
     })
 })
 
+
+router.get('/getbyname/:username', (req, res) => {
+
+  User.findOne({username: req.params.username}).then((foundUser) => {
+      res.status(200).send(foundUser);
+      console.log("user found !")
+  }).catch((err) => {
+      res.status(400).send(err)
+  })
+})
+
 router.get('/getbyemail/:email', (req, res) => {
 
   User.findOne({email: req.params.email}).then((foundUser) => {
