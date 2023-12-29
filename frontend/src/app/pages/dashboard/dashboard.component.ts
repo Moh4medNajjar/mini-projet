@@ -15,8 +15,6 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateTaskDialogComponent } from '../../update-task-dialog/update-task-dialog.component'; 
 import { NewTaskDialogComponent } from '../../new-task-dialog/new-task-dialog.component'; 
-
-
 import { Router } from '@angular/router';
 
 @Component({
@@ -58,6 +56,7 @@ export class DashboardComponent {
   constructor(public TaskService: TaskService, public WebReqService : WebRequestService, private router: Router, private dialog: MatDialog){}
  
   ngOnInit(): void {
+
     this.getTasks();
 
   }

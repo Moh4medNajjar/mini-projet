@@ -1,4 +1,5 @@
 import { Component, OnInit} from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ParamMap } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -9,10 +10,12 @@ import { WebRequestService } from './../../web-request.service';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ParticipantsDialogComponent } from '../../participants-dialog/participants-dialog.component'; 
+import { forkJoin } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [HttpClientModule],
+  imports: [HttpClientModule, CommonModule],
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss','../dashboard/dashboard.component.scss'],
   providers: [TaskService, WebRequestService]
@@ -53,6 +56,7 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit(){
+    console.log( this.getTask());
     this.getTask().subscribe((data: Task) => {
       this.TaskData = data;
       this.title = this.TaskData.title || '';
@@ -60,9 +64,17 @@ export class TaskComponent implements OnInit {
       this.owner = this.TaskData.owner || '';
       this.getUsername(this.owner).subscribe((data: User) =>{
         this.ownerName=data.username;
+        this.participantsNamesSet = new Set<string>(this.participantsNames);
+        for (const participantId of this.participants) {
+          this.getUsername(participantId).subscribe((data: User) => {
+            const username = data.username;
+            if (!this.participantsNamesSet.has(username)) {
+              this.participantsNames.push(username);
+              this.participantsNamesSet.add(username);}
+          });
+        }
       })
     });
-
   }
 
   public getTask(): Observable<Task> {
@@ -80,7 +92,6 @@ export class TaskComponent implements OnInit {
   ParticipantsDialog() {
     this.getTask().subscribe((data: Task) => {
       this.TaskData = data;
-      this.title = this.TaskData.title || '';
       this.participants = this.TaskData.participants || [];
       this.owner = this.TaskData.owner || '';
       this.getUsername(this.owner).subscribe((data: User) =>{
@@ -88,12 +99,13 @@ export class TaskComponent implements OnInit {
         // if(this.participants.length>0){
         this.participantsNamesSet = new Set<string>(this.participantsNames);
           for (const participantId of this.participants) {
+            console.log("dafaef")
             this.getUsername(participantId).subscribe((data: User) => {
               const username = data.username;
               if (!this.participantsNamesSet.has(username)) {
                 this.participantsNames.push(username);
                 this.participantsNamesSet.add(username);}
-                
+
               const dialogRef = this.dialog.open(ParticipantsDialogComponent, {
                 width: '700px', 
                 data: {participantsNames: this.participantsNames,ownerName: this.ownerName },
@@ -119,6 +131,9 @@ export class TaskComponent implements OnInit {
       })
     });
   }
+
+
+
 
 
   updateTask(taskId: string, updatedTask: Task) {
