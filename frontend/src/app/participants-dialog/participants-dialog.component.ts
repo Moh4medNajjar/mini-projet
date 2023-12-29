@@ -52,7 +52,7 @@ export class ParticipantsDialogComponent {
     this.getAllUsers();
 
     this.addParticipantForm = this.fb.group({
-      participant: ['', Validators.required],
+      participant: [],
     });
 
     this.filteredparticipants = this.participantCtrl.valueChanges.pipe(
@@ -91,8 +91,6 @@ export class ParticipantsDialogComponent {
     const value = (event.value || '').trim();
     if (value && this.allusers.includes(value)) {
       this.participants.push(value);
-      //remove it from allusers
-      console.log(this.participants);
     }
 
 
@@ -106,7 +104,7 @@ export class ParticipantsDialogComponent {
 
     if (index >= 0) {
       this.participants.splice(index, 1);
-
+      console.log(this.data.participantsNames)
       this.announcer.announce(`Removed ${participant}`);
     }
   }

@@ -1,0 +1,14 @@
+<form [formGroup]="updateStatusForm" (ngSubmit)="save()">
+
+    <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+            <mat-option *ngFor="let status of statuses" [value]="status">{{ status }}</mat-option>
+        </mat-select>
+        </mat-form-field>
+
+        <div class="dialog-buttons">
+        <button mat-button type="button" (click)="cancel()">Cancel</button>
+        <button mat-raised-button color="primary" type="submit">Save</button>
+        </div>
+</form>

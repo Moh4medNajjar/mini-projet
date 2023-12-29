@@ -14,7 +14,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
         <div style="max-width: fit-content;" class="mx-auto">
           <div (click)="ParticipantsDialog()"  class="button d-flex justify-content-center align-items-center">
             <i class="fa-solid fa-circle-plus"></i>
-            <p style="margin:0 10px; font-size:20px;" data-bs-toggle="modal" data-bs-target="#exampleModal">Add a participant</p>
+            <p style="margin:0 10px; font-size:20px;" >Add a participant</p>
           </div>
           <!--Modal-->
          <div class="collaborators-box d-flex justify-content-between">
@@ -27,7 +27,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
         <div style="max-width: fit-content;" class="mx-auto">
           <div  class="button d-flex justify-content-center align-items-center">
             <i class="fa-solid fa-circle-plus"></i>
-            <p style="margin:0 10px; font-size:20px;" data-bs-toggle="modal" data-bs-target="#exampleModal">Assign Task</p>
+            <p style="margin:0 10px; font-size:20px;">Assign Task</p>
           </div>
           <!--Modal-->
          <div class="collaborators-box d-flex justify-content-between">
@@ -40,8 +40,8 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
         </div>
         <div class="collaborators-box d-flex justify-content-between">
         <div style="max-width: fit-content;" class="mx-auto">
-        <mat-card class="demo-inline-calendar-card">
-          <mat-calendar [(selected)]="due_date" disabled></mat-calendar>
+        <mat-card class="demo-inline-calendar-card" >
+          <mat-calendar [startAt]="startAtDate"  [(selected)]="due_date" [dateFilter]="dateFilter"></mat-calendar>
         </mat-card>
         <p>Dead Line: {{ (due_date | date: 'shortDate') | date }}</p>
         </div>
@@ -63,10 +63,24 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                 </div>
               </div>
               <div class="buttons mt-2 pt-2">
-                <button style="background-color:#cacfd2; color:rgb(159, 156, 196)" class="btn me-2 twoButtons rounded-pill"><i class="fa-solid fa-circle-plus"></i>Status</button>
-                <button style="background-color:#314150; color:white" class="btn me-2 twoButtons rounded-pill"><i class="fa fa-envelope me-2"></i>Priority</button>
-                <!-- <button style="background-color:#314150; color:white" class="btn rounded-pill twoButtons">due_date</button> -->
-               
+                <button mat-raised-button matTooltip="Change status" (click)="StatusDialog()" style="background-color:#314150; color:white" class="btn me-2 twoButtons rounded-pill"><i class="fa-solid fa-circle-plus"></i>{{status}}</button>
+                <button mat-raised-button matTooltip="Change priority" (click)="PriorityDialog()" style="background-color:#314150; color:white" class="btn me-2 twoButtons rounded-pill"><i class="fa fa-envelope me-2"></i>{{priority}}</button>
+                         <mat-form-field class="example-full-width">
+                  <mat-label></mat-label>
+                  <input matInput [matDatepicker]="picker" [value]="due_date" (dateInput)="updateDueDate($event.value)">
+
+                  <mat-datepicker touchUi #picker ></mat-datepicker>
+                  <!-- <mat-datepicker-actions>
+                    <button mat-button matDatepickerCancel>Cancel</button>
+                    <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+                  </mat-datepicker-actions> -->
+                </mat-form-field>
+
+                <mat-datepicker-toggle mat-raised-button matTooltip="Change Deadline : {{(due_date | date: 'shortDate') | date}}" matIconSuffix [for]="picker"></mat-datepicker-toggle>  
+
+              
+                <!-- <button mat-raised-button (click)="picker.open()" style="background-color:#314150; color:white" class="btn rounded-pill twoButtons">{{ (due_date | date: 'shortDate') | date }}</button> -->
+
               </div>
             </div>
           </div>

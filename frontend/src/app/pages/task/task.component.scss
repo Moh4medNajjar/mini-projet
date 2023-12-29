@@ -3,10 +3,20 @@
   }
 
 
-  .demo-inline-calendar-card {
-    width: 200px;
-  }
+.example-full-width {
+  display: none;
+}
 
-  .disabled-date {
-    pointer-events: none;
-  }
+
+.demo-inline-calendar-card {
+  width: 200px;
+}
+
+.disabled-date {
+  pointer-events: none;
+}
+
+
+.example-form-field {
+  margin-right: 20px;
+}
