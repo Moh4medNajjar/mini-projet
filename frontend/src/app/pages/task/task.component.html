@@ -38,7 +38,15 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
             </div>
           </div>
         </div>
+        <div class="collaborators-box d-flex justify-content-between">
+        <div style="max-width: fit-content;" class="mx-auto">
+        <mat-card class="demo-inline-calendar-card">
+          <mat-calendar [(selected)]="due_date" disabled></mat-calendar>
+        </mat-card>
+        <p>Dead Line: {{ (due_date | date: 'shortDate') | date }}</p>
+        </div>
       </div>
+    </div>
 
 
     <div class="col-lg-9 mt-4">
@@ -57,7 +65,8 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
               <div class="buttons mt-2 pt-2">
                 <button style="background-color:#cacfd2; color:rgb(159, 156, 196)" class="btn me-2 twoButtons rounded-pill"><i class="fa-solid fa-circle-plus"></i>Status</button>
                 <button style="background-color:#314150; color:white" class="btn me-2 twoButtons rounded-pill"><i class="fa fa-envelope me-2"></i>Priority</button>
-                <button style="background-color:#314150; color:white" class="btn rounded-pill twoButtons">due_date</button>
+                <!-- <button style="background-color:#314150; color:white" class="btn rounded-pill twoButtons">due_date</button> -->
+               
               </div>
             </div>
           </div>

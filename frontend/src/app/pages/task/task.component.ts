@@ -10,12 +10,13 @@ import { WebRequestService } from './../../web-request.service';
 import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ParticipantsDialogComponent } from '../../participants-dialog/participants-dialog.component'; 
-import { forkJoin } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatCardModule} from '@angular/material/card';
+import {MatNativeDateModule} from '@angular/material/core';
 @Component({
   selector: 'app-task',
   standalone: true,
-  imports: [HttpClientModule, CommonModule],
+  imports: [HttpClientModule, CommonModule, MatCardModule, MatDatepickerModule, MatNativeDateModule],
   templateUrl: './task.component.html',
   styleUrls: ['./task.component.scss','../dashboard/dashboard.component.scss'],
   providers: [TaskService, WebRequestService]
@@ -27,6 +28,7 @@ export class TaskComponent implements OnInit {
   public status: string ='';
   public priority: string ='';
   public category: string ='';
+  public due_date: Date = new Date();
   public owner: string ='';
   public participants: string[] =[];
   public participantsNames: string[] =[];
@@ -54,13 +56,16 @@ export class TaskComponent implements OnInit {
     };
 
   }
+  
 
   ngOnInit(){
-    console.log( this.getTask());
     this.getTask().subscribe((data: Task) => {
       this.TaskData = data;
       this.title = this.TaskData.title || '';
       this.participants = this.TaskData.participants || [];
+      console.log(this.TaskData.due_date);
+      this.due_date = this.TaskData.due_date || new Date();
+      console.log(this.due_date);
       this.owner = this.TaskData.owner || '';
       this.getUsername(this.owner).subscribe((data: User) =>{
         this.ownerName=data.username;
@@ -75,7 +80,11 @@ export class TaskComponent implements OnInit {
         }
       })
     });
+
+
+    
   }
+  
 
   public getTask(): Observable<Task> {
     return this.TaskService.getTasksById(this.taskId);
@@ -90,45 +99,25 @@ export class TaskComponent implements OnInit {
   }
 
   ParticipantsDialog() {
-    this.getTask().subscribe((data: Task) => {
-      this.TaskData = data;
-      this.participants = this.TaskData.participants || [];
-      this.owner = this.TaskData.owner || '';
-      this.getUsername(this.owner).subscribe((data: User) =>{
-        this.ownerName=data.username;  
-        // if(this.participants.length>0){
-        this.participantsNamesSet = new Set<string>(this.participantsNames);
-          for (const participantId of this.participants) {
-            console.log("dafaef")
-            this.getUsername(participantId).subscribe((data: User) => {
-              const username = data.username;
-              if (!this.participantsNamesSet.has(username)) {
-                this.participantsNames.push(username);
-                this.participantsNamesSet.add(username);}
 
-              const dialogRef = this.dialog.open(ParticipantsDialogComponent, {
-                width: '700px', 
-                data: {participantsNames: this.participantsNames,ownerName: this.ownerName },
-              });
+    const dialogRef = this.dialog.open(ParticipantsDialogComponent, {
+      width: '700px', 
+      data: {participantsNames: this.participantsNames,ownerName: this.ownerName },
+    });
 
-              dialogRef.afterClosed().subscribe((result) => {
-                if (result) {
-                  this.participantsSet = new Set<string>(this.participants);
-                  for(const participantName of this.participantsNames){
-                    this.getUserId(participantName).subscribe((data: any) =>{
-                      if (!this.participantsSet.has(data._id)) {
-                        this.participants.push(data._id);
-                        this.participantsSet.add(data._id);
-                      }
-                      this.updateTask(this.TaskData?._id, this.TaskData ?? {} as Task);
-                    })
-                  }
-                }
-              });
-            });
-          }
-        // }
-      })
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.participantsSet = new Set<string>(this.participants);
+        for(const participantName of this.participantsNames){
+          this.getUserId(participantName).subscribe((data: any) =>{
+            if (!this.participantsSet.has(data._id)) {
+              this.participants.push(data._id);
+              this.participantsSet.add(data._id);
+            }
+            this.updateTask(this.TaskData?._id, this.TaskData ?? {} as Task);
+          })
+        }
+      }
     });
   }
 
