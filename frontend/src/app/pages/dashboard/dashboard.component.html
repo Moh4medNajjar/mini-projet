@@ -1,13 +1,13 @@
 <link href="
 https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
 " rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
 <div class="container-fluid">
-  <div>
 
-  </div>
 
-<!-- <div class="new-task-form">
+  <!-- <div class="new-task-form">
   <h3>Create a New Task {{AllTasks | json}}</h3>
   <form #newTaskForm="ngForm" (ngSubmit)="newTask()">
     <div class="form-group">
@@ -36,7 +36,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
       </div>
     </div>
     <div class="col-lg-3 mt-4" style="flex-direction: column;">
-      <div style="max-width: fit-content;" class="mx-auto">
+      <div style="max-width: fit-content;" class="mx-auto" style="margin-bottom:100px">
         <div class="button d-flex justify-content-center align-items-center">
           <i class="fa-solid fa-circle-plus"></i>
           <p style="margin:0 10px; font-size:20px;" data-bs-toggle="modal" data-bs-target="#exampleModal">Add a collaborator</p>
@@ -49,8 +49,8 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Find new collaborator</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-                <input type="text" [(ngModel)]="searchedEmail">
-                <button type="button" class="btn addUsers" (click)="addCollaborator()">Add User</button>
+              <input type="text" [(ngModel)]="searchedEmail">
+              <button type="button" class="btn addUsers" (click)="addCollaborator()">Add User</button>
 
             </div>
           </div>
@@ -65,6 +65,16 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
         </div>
       </div>
 
+
+
+
+      <div style="max-width: fit-content;" class="mx-auto" >
+        <div class="card">
+          <div class="card-body">
+            <button>here will be the Unread messages</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="col-lg-9 mt-4">
@@ -75,41 +85,45 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
               <div class=" d-flex align-items-center justify-content-start">
                 <img src="../../../assets/images/image.png" class="rounded-pill" width="60" height="60" alt="">
                 <div class="hello ms-3 mt-2">
-                  <p style="font-weight: 800; font-size:24px; margin:0px;margin-bottom:6px; margin-top:3px">Welcome again, {{WebReqService.getUserDataFromToken().username}}!</p>
-                  <p style="font-weight:500; color:grey; letter-spacing: 1px;"> <i class="fa fa-bell me-1" style="margin:0px;"></i> You have 2 new messages and 4 due tasks..</p>
+                  <p style="font-weight: 800; font-size:24px; margin:0px;margin-bottom:6px; margin-top:3px">Welcome
+                    again, {{WebReqService.getUserDataFromToken().username}}!</p>
+                  <p style="font-weight:500; color:grey; letter-spacing: 1px;"> <i class="fa fa-bell me-1"
+                      style="margin:0px;"></i> You have 2 new messages and 4 due tasks..</p>
                 </div>
               </div>
               <div class="buttons mt-2 pt-2">
-                <button (click)="newTaskDialog()" style="background-color:#cacfd2; color:rgb(159, 156, 196)" class="btn me-2 twoButtons rounded-pill"><i class="fa-solid fa-circle-plus"></i>New Task</button>
-                <button style="background-color:#314150; color:white" class="btn me-2 twoButtons rounded-pill"><i class="fa fa-envelope me-2"></i>Messages</button>
-                <button style="background-color:#314150; color:white" class="btn rounded-pill twoButtons">Online users</button>
+                <button (click)="newTaskDialog()" style="background-color:#cacfd2; color:rgb(159, 156, 196)"
+                  class="btn me-2 twoButtons rounded-pill"><i class="fa-solid fa-circle-plus"></i>New Task</button>
+                <button style="background-color:#314150; color:white" class="btn me-2 twoButtons rounded-pill"><i
+                    class="fa fa-envelope me-2"></i>Messages</button>
+                <button style="background-color:#314150; color:white" class="btn rounded-pill twoButtons">Online
+                  users</button>
               </div>
             </div>
           </div>
         </div>
 
       </div>
-      <div class="row">
+      <div class="button d-flex justify-content-center align-items-center" style="margin-bottom:20px">
+        <p style="margin:0 10px; font-size:20px;">My tasks</p>
+      </div>
+      <div class="row" style="margin-bottom:100px">
         <div class="col-md-4 col-xs-12">
           <div class="d-flex  justify-content-center align-items-center">
             <div class="example-container">
               <h2>To do <span>({{ todo.length }})</span></h2>
 
-              <div
-                cdkDropList
-                #todoList="cdkDropList"
-                [cdkDropListData]="todo"
-                [cdkDropListConnectedTo]="[inProgressList, doneList]"
-                class="example-list"
+              <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo"
+                [cdkDropListConnectedTo]="[inProgressList, doneList]" class="example-list"
                 (cdkDropListDropped)="drop($event)">
                 @for (item of todo; track item) {
-                  <div class="example-box" cdkDrag>
-                    <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
-                    <p class="text-task">{{item.title}}</p>
-                    <button (click)="openTask(item._id)">Open Task</button>
-                    <button (click)="updateTaskDialog(item)">Update Task</button>
-                    <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
-                  </div>
+                <div class="example-box" cdkDrag>
+                  <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
+                  <p class="text-task">{{item.title}}</p>
+                  <button (click)="openTask(item._id)">Open Task</button>
+                  <button (click)="updateTaskDialog(item)">Update Task</button>
+                  <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
+                </div>
                 }
               </div>
             </div>
@@ -120,21 +134,17 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
             <div class="example-container">
               <h2>In progress <span>({{ inProgress.length }})</span></h2>
 
-              <div
-                cdkDropList
-                #inProgressList="cdkDropList"
-                [cdkDropListData]="inProgress"
-                [cdkDropListConnectedTo]="[todoList, doneList]"
-                class="example-list"
+              <div cdkDropList #inProgressList="cdkDropList" [cdkDropListData]="inProgress"
+                [cdkDropListConnectedTo]="[todoList, doneList]" class="example-list"
                 (cdkDropListDropped)="drop($event)">
                 @for (item of inProgress; track item) {
-                  <div class="example-box" cdkDrag>
-  <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
-  <p class="text-task">{{item.title}}</p>
-  <button (click)="openTask(item._id)">Open Task</button>
-  <button (click)="updateTaskDialog(item)">Update Task</button>
-  <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
-</div>
+                <div class="example-box" cdkDrag>
+                  <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
+                  <p class="text-task">{{item.title}}</p>
+                  <button (click)="openTask(item._id)">Open Task</button>
+                  <button (click)="updateTaskDialog(item)">Update Task</button>
+                  <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
+                </div>
                 }
               </div>
             </div>
@@ -145,27 +155,54 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
             <div class="example-container">
               <h2>Done <span>({{ done.length }})</span></h2>
 
-              <div
-                cdkDropList
-                #doneList="cdkDropList"
-                [cdkDropListData]="done"
-                [cdkDropListConnectedTo]="[todoList, inProgressList]"
-                class="example-list"
+              <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done"
+                [cdkDropListConnectedTo]="[todoList, inProgressList]" class="example-list"
                 (cdkDropListDropped)="drop($event)">
                 @for (item of done; track item) {
-                  <div class="example-box" cdkDrag>
-                    <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
-                    <p class="text-task">{{item.title}}</p>
-                    <button (click)="openTask(item._id)">Open Task</button>
-                    <button (click)="updateTaskDialog(item)">Update Task</button>
-                    <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
-                  </div>
+                <div class="example-box" cdkDrag>
+                  <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
+                  <p class="text-task">{{item.title}}</p>
+                  <button (click)="openTask(item._id)">Open Task</button>
+                  <button (click)="updateTaskDialog(item)">Update Task</button>
+                  <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
+                </div>
                 }
               </div>
             </div>
           </div>
         </div>
       </div>
+
+
+
+
+      <div class="button d-flex justify-content-center align-items-center" style="margin-bottom:20px" >
+        <p style="margin:0 10px; font-size:20px;" >Assigned Tasks</p>
+      </div>
+
+
+      <div class="row">
+        <div class="card">
+          <div class="card-body">
+            <button>here will be the Assigned Tasks</button>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
   </div>
 </div>

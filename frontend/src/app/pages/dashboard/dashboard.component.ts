@@ -129,6 +129,20 @@ export class DashboardComponent {
         event.previousIndex,
         event.currentIndex,
       );
+     const status = ['Todo', 'In Progress', 'Done'];
+        const str = event.container.id;
+        const match = str.match(/\d+/);
+        if (match) {
+          const numberAsStr = match[0]; 
+          const numberAsInt = parseInt(numberAsStr, 10); 
+          
+        
+        let updatedTask = event.container.data[event.currentIndex];
+        updatedTask.status= status[numberAsInt]
+        
+        console.log("new status :", updatedTask.status) ;
+        this.updateTask(updatedTask._id, updatedTask); 
+        }
     }
   }
 
