@@ -1,0 +1,12 @@
+<form [formGroup]="assignForm" (ngSubmit)="save()">
+
+    <mat-chip-listbox aria-label="Fish selection" formControlName="participant"  >
+        <mat-chip-option *ngFor="let participant of allusers" [value]="participant">
+          {{ participant }}
+        </mat-chip-option>
+      </mat-chip-listbox>
+    <div class="dialog-buttons">
+        <button mat-button type="button" (click)="cancel()">Cancel</button>
+        <button mat-raised-button color="primary" type="submit">Save</button>
+    </div>
+</form>

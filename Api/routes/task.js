@@ -1,7 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const Task = require('../db/models/task');
-// Get all tasks
+
+//Get all tasks
+router.get('/all/', async (req, res) => {
+  try {
+    const tasks = await Task.find();
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+// Get all tasks by owner
 router.get('/all/:ownerId', async (req, res) => {
   try {
     const ownerId = req.params.ownerId;
@@ -67,9 +79,6 @@ router.delete('/delete/:id', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
-
-
 
 
 module.exports = router;

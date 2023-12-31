@@ -5,6 +5,7 @@ const taskSchema = new mongoose.Schema({
   description: String,
   due_date: Date,
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  assigned_to: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
   priority: { type: String, enum: ['Low', 'Medium', 'High'], default: 'Medium' },
   status: { type: String, enum: ['Todo', 'In Progress', 'Done'], default: 'Todo' },
   category: String,

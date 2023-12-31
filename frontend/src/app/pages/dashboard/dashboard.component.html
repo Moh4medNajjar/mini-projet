@@ -4,6 +4,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
   integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
   crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <div class="container-fluid">
 
 
@@ -39,7 +40,8 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
       <div style="max-width: fit-content;" class="mx-auto" style="margin-bottom:100px">
         <div class="button d-flex justify-content-center align-items-center">
           <i class="fa-solid fa-circle-plus"></i>
-          <p style="margin:0 10px; font-size:20px;" data-bs-toggle="modal" data-bs-target="#exampleModal">Add a collaborator</p>
+          <p style="margin:0 10px; font-size:20px;" data-bs-toggle="modal" data-bs-target="#exampleModal">Add a
+            collaborator</p>
         </div>
         <!--Modal-->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -66,9 +68,7 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
       </div>
 
 
-
-
-      <div style="max-width: fit-content;" class="mx-auto" >
+      <div style="max-width: fit-content;" class="mx-auto">
         <div class="card">
           <div class="card-body">
             <button>here will be the Unread messages</button>
@@ -120,9 +120,15 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                 <div class="example-box" cdkDrag>
                   <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
                   <p class="text-task">{{item.title}}</p>
-                  <button (click)="openTask(item._id)">Open Task</button>
-                  <button (click)="updateTaskDialog(item)">Update Task</button>
-                  <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
+                  <button (click)="openTask(item._id)"> <span class="material-symbols-outlined">
+                    open_in_new
+                    </span></button>
+                  <button (click)="updateTaskDialog(item)"><span class="material-symbols-outlined">
+                    edit
+                    </span></button>
+                  <button (click)="deleteTask(item._id)" class="delete-button"><span class="material-symbols-outlined">
+                    delete
+                    </span></button>
                 </div>
                 }
               </div>
@@ -141,9 +147,15 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                 <div class="example-box" cdkDrag>
                   <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
                   <p class="text-task">{{item.title}}</p>
-                  <button (click)="openTask(item._id)">Open Task</button>
-                  <button (click)="updateTaskDialog(item)">Update Task</button>
-                  <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
+                  <button (click)="openTask(item._id)"><span class="material-symbols-outlined">
+                    edit
+                    </span></button>
+                  <button (click)="updateTaskDialog(item)"><span class="material-symbols-outlined">
+                    edit
+                    </span></button>
+                  <button (click)="deleteTask(item._id)" class="delete-button"><span class="material-symbols-outlined">
+                    delete
+                    </span></button>
                 </div>
                 }
               </div>
@@ -162,9 +174,15 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
                 <div class="example-box" cdkDrag>
                   <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
                   <p class="text-task">{{item.title}}</p>
-                  <button (click)="openTask(item._id)">Open Task</button>
-                  <button (click)="updateTaskDialog(item)">Update Task</button>
-                  <button (click)="deleteTask(item._id)" class="delete-button">Delete</button>
+                  <button (click)="openTask(item._id)"><span class="material-symbols-outlined">
+                    open_in_new
+                    </span></button>
+                  <button (click)="updateTaskDialog(item)"><span class="material-symbols-outlined">
+                    edit
+                    </span></button>
+                  <button (click)="deleteTask(item._id)" class="delete-button"><span class="material-symbols-outlined">
+                    delete
+                    </span></button>
                 </div>
                 }
               </div>
@@ -175,34 +193,31 @@ https://cdn.jsdelivr.net/npm/fontsource-cairo@4.0.0/index.min.css
 
 
 
-
-      <div class="button d-flex justify-content-center align-items-center" style="margin-bottom:20px" >
-        <p style="margin:0 10px; font-size:20px;" >Assigned Tasks</p>
+      <div class="button d-flex justify-content-center align-items-center" style="margin-bottom:20px">
+        <p style="margin: 0 10px; font-size: 20px;">
+          Participating in {{ participating.length }} Task{{ participating.length !== 1 ? 's' : '' }}
+        </p>
       </div>
 
-
-      <div class="row">
-        <div class="card">
-          <div class="card-body">
-            <button>here will be the Assigned Tasks</button>
+      <div class="row" style="margin-bottom:100px">
+        <div class="d-flex  justify-content-center align-items-center">
+          <div cdkDropList class="example-list"
+            (cdkDropListDropped)="drop($event)">
+            @for (item of participating; track item) {
+            <div class="example-box" cdkDrag>
+              <div class="priority-circle" [style.background-color]="getPriorityColor(item.priority)"></div>
+              <p class="text-task">{{item.title}}</p>
+              <button (click)="openTask(item._id)"><span class="material-symbols-outlined">
+                open_in_new
+                </span></button>
+              <button (click)="unsubscribeTask(item._id)" class="delete-button"><span class="material-symbols-outlined">
+                person_remove
+                </span></button>
+            </div>
+            }
           </div>
         </div>
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
   </div>
 </div>

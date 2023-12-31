@@ -5,6 +5,7 @@ export interface Task {
     description?: string;
     due_date?: Date;
     owner?: string;
+    assigned_to?: string;
     status?: string;
     category?: string;
     participants?: string[];

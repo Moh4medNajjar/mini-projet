@@ -15,6 +15,16 @@
   transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
+
+.button1 {
+  border-radius: 10px;
+  padding: 5px 8px;
+  background: #fff; /* White background */
+  color: linear-gradient(45deg, #6c1fbc, #2a00b0); /* Text color gradient */
+  border: none;
+  height: 45px;
+}
+
 .glass-container {
   cursor: pointer;
   border-radius: 13px;

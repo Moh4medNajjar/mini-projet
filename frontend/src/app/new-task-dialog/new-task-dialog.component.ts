@@ -108,6 +108,7 @@ export class NewTaskDialogComponent {
       this.data.newTaskData.due_date=formData.due_date;
       this.data.newTaskData.priority=formData.priority;
       this.data.newTaskData.category=formData.category;
+      console.log(this.data.newTaskData.assigned_to);
       this.dialogRef.close(this.createTaskForm.value);
     }
   }

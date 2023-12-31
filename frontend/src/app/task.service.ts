@@ -10,10 +10,11 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  getAllTasks(ownerId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/all/${ownerId}`);
+  getAllTasks(ownerId?: string): Observable<any[]> {
+    const url = ownerId ? `${this.baseUrl}/all/${ownerId}` : `${this.baseUrl}/all`;
+    return this.http.get<any[]>(url);
   }
-
+  
   getTasksById(id: string): Observable<Task> {
     return this.http.get<Task>(`${this.baseUrl}/${id}`);
   }

@@ -13,8 +13,8 @@ import { WebRequestService } from './../../web-request.service';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { UpdateTaskDialogComponent } from '../../update-task-dialog/update-task-dialog.component'; 
-import { NewTaskDialogComponent } from '../../new-task-dialog/new-task-dialog.component'; 
+import { UpdateTaskDialogComponent } from '../../update-task-dialog/update-task-dialog.component';
+import { NewTaskDialogComponent } from '../../new-task-dialog/new-task-dialog.component';
 import { Router } from '@angular/router';
 
 @Component({
@@ -27,6 +27,7 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent {
   public AllTasks: Task[] = [];
+  public AllOwnedTasks: Task[] = [];
   public newTaskData: Task = {
     _id: undefined,
     title: '',
@@ -34,6 +35,7 @@ export class DashboardComponent {
     description: '',
     due_date: new Date(),
     owner: '',
+    assigned_to: '000000000000000000000000',
     status: '',
     category: '',
     participants: [],
@@ -41,33 +43,55 @@ export class DashboardComponent {
     attachments: []
   };
 
-  todo : Task[] = [];
+  public TaskData: Task = {
+    _id: undefined,
+    title: '',
+    priority: '',
+    description: '',
+    due_date: new Date(),
+    owner: '',
+    assigned_to: '000000000000000000000000',
+    status: '',
+    category: '',
+    participants: [],
+    comments: [],
+    attachments: []
+  };
 
-  inProgress : Task[] = [];
+  todo: Task[] = [];
 
-  done : Task[] = [];
+  inProgress: Task[] = [];
+
+  done: Task[] = [];
+
+  participating: Task[] = [];
 
   searchedEmail: string = ""
   collaborators = [
-  { username: 'MohamedNajjar', email: 'najjarmohamed443@gmail.com', image: '../../../assets/images/image.png' },
+    { username: 'MohamedNajjar', email: 'najjarmohamed443@gmail.com', image: '../../../assets/images/image.png' },
 
   ];
 
-  constructor(public TaskService: TaskService, public WebReqService : WebRequestService, private router: Router, private dialog: MatDialog){}
- 
+  constructor(public TaskService: TaskService, public WebReqService: WebRequestService, private router: Router, private dialog: MatDialog) { }
+
   ngOnInit(): void {
 
     this.getTasks();
-
+    this.getPartTasks();
   }
   public getTasks(): void {
+    this.todo = [];
+    this.inProgress = [];
+    this.done = [];
+    this.AllTasks = [];
+    this.AllOwnedTasks = [];
     const ownerId = this.WebReqService.getUserDataFromToken()._id;
-  
+
     this.TaskService.getAllTasks(ownerId).subscribe((data: Task[]) => {
-      this.AllTasks = data;
-  
-      if (this.AllTasks && Array.isArray(this.AllTasks)) {
-        this.AllTasks.forEach((task: Task) => {
+      this.AllOwnedTasks = data;
+
+      if (this.AllOwnedTasks && Array.isArray(this.AllOwnedTasks)) {
+        this.AllOwnedTasks.forEach((task: Task) => {
           switch (task.status) {
             case 'Todo':
               this.todo.push(task);
@@ -79,7 +103,7 @@ export class DashboardComponent {
               this.done.push(task);
               break;
           }
-  
+
           // Add task participants to collaborators
           if (task.participants && Array.isArray(task.participants)) {
             task.participants.forEach((participant: any) => {
@@ -90,7 +114,7 @@ export class DashboardComponent {
                 email: participant.email,
                 image: participant.image
               };
-  
+
               // Check if the collaborator is not already in the array
               if (!this.collaborators.some(c => c.email === collaborator.email)) {
                 this.collaborators.push(collaborator);
@@ -101,8 +125,28 @@ export class DashboardComponent {
       }
     });
   }
-  
-  
+
+  public getPartTasks() {
+    this.participating = [];
+    this.AllTasks = [];
+    const ownerId = this.WebReqService.getUserDataFromToken()._id;
+    this.TaskService.getAllTasks().subscribe((data: Task[]) => {
+      this.AllTasks = data;
+      if (this.AllTasks && Array.isArray(this.AllTasks)) {
+        this.AllTasks.forEach((task: Task) => {
+          task.participants?.forEach((participant_id: string) => {
+            if (participant_id == ownerId) {
+              this.participating.push(task);
+            }
+          })
+        });
+      }
+    });
+  }
+
+
+
+
   public newTask() {
     this.newTaskData.status = 'Todo';
     this.newTaskData.owner = this.WebReqService.getUserDataFromToken()._id;
@@ -114,9 +158,11 @@ export class DashboardComponent {
         console.error('Error creating task:', error);
       }
     );
+    this.AllTasks.push(this.newTaskData);
+    this.getTasks();
   }
-  
-  
+
+
 
 
   drop(event: CdkDragDrop<Task[]>) {
@@ -129,20 +175,20 @@ export class DashboardComponent {
         event.previousIndex,
         event.currentIndex,
       );
-     const status = ['Todo', 'In Progress', 'Done'];
-        const str = event.container.id;
-        const match = str.match(/\d+/);
-        if (match) {
-          const numberAsStr = match[0]; 
-          const numberAsInt = parseInt(numberAsStr, 10); 
-          
-        
+      const status = ['Todo', 'In Progress', 'Done'];
+      const str = event.container.id;
+      const match = str.match(/\d+/);
+      if (match) {
+        const numberAsStr = match[0];
+        const numberAsInt = parseInt(numberAsStr, 10);
+
+
         let updatedTask = event.container.data[event.currentIndex];
-        updatedTask.status= status[numberAsInt]
-        
-        console.log("new status :", updatedTask.status) ;
-        this.updateTask(updatedTask._id, updatedTask); 
-        }
+        updatedTask.status = status[numberAsInt]
+
+        console.log("new status :", updatedTask.status);
+        this.updateTask(updatedTask._id, updatedTask);
+      }
     }
   }
 
@@ -184,29 +230,65 @@ export class DashboardComponent {
   }
 
 
+  public unsubscribeTask(taskId: string): void {
+    const userId = this.WebReqService.getUserDataFromToken()._id;
+  
+    this.TaskService.getTasksById(taskId).subscribe(
+      (data: Task) => {
+        this.TaskData = data;
+  
+        if (this.TaskData.participants) {
+          const indexToRemove = this.TaskData.participants.findIndex((id) => id === userId);
+          const indexToRemove1 = this.participating.findIndex((id) => id === userId);
+          if (indexToRemove !== -1) {
+            this.TaskData.participants.splice(indexToRemove, 1);
+            this.participating.splice(indexToRemove1, 1);
+          }
+        }
+  
+        if (this.TaskData.assigned_to === userId) {
+          this.TaskData.assigned_to = '000000000000000000000000';
+        }
+  
+        this.updateTask(this.TaskData?._id, this.TaskData ?? {} as Task);
+        this.getTasks();
+      },
+      (error) => {
+        console.error('Error getting task by ID:', error);
+      }
+    );
+  }
+  
+
+
   public deleteTask(taskId: string): void {
+    this.TaskService.getTasksById(taskId).subscribe((data) => {
+    this.TaskData = data; 
     this.TaskService.deleteTask(taskId).subscribe(
       () => {
         console.log('Task deleted successfully');
-        // Refresh the task lists after deletion
-        this.getTasks();
+        const indexToRemove = this.AllTasks.findIndex(task => task._id === this.TaskData._id);
+        if (indexToRemove !== -1) {
+          this.AllTasks.splice(indexToRemove, 1);
+        }
+        this.getPartTasks();
       },
       (error) => {
         console.error('Error deleting task:', error);
       }
-    );
+    );})
   }
 
   newTaskDialog() {
 
     const dialogRef = this.dialog.open(NewTaskDialogComponent, {
       width: '700px',
-      data: {newTaskData: this.newTaskData},
+      data: { newTaskData: this.newTaskData },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.newTask(); 
+        this.newTask();
       }
     });
   }
@@ -217,13 +299,13 @@ export class DashboardComponent {
   updateTaskDialog(task: Task) {
     let taskId = task._id;
     const dialogRef = this.dialog.open(UpdateTaskDialogComponent, {
-      width: '700px', 
+      width: '700px',
       data: { task },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.updateTask(taskId, result); 
+        this.updateTask(taskId, result);
       }
     });
   }
@@ -232,7 +314,7 @@ export class DashboardComponent {
     this.TaskService.updateTask(taskId, updatedTask).subscribe(
       (response) => {
         console.log('Task updated:', response);
-        // Handle success, close the dialog, or perform any necessary action
+        this.getTasks();
       },
       (error) => {
         console.error('Error updating task:', error);
